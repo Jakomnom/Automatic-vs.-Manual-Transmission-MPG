@@ -35,5 +35,46 @@ For more details about the dataset, see the [R documentation](https://www.rdocum
 
 ## Repository Structure
 ```
-Motor-Trend-Analysis/ ├── README.md # This file ├── analysis.Rmd # R Markdown file for the analysis ├── analysis.pdf # Compiled PDF report ├── figures/ # Folder for figures └── data/ # Folder for datasets
+Motor-Trend-Analysis/ 
+├── README.md # This file
+├── analysis.Rmd # R Markdown file for the analysis 
+├── analysis.pdf # Compiled PDF report 
+├── figures/ # Folder for figures 
+└── data/ # Folder for datasets
+```
+
+---
+
+## How to Use This Repository
+
+1. **Open the R Markdown file**:
+   - Open `analysis.Rmd` in RStudio.
+   - Install any required packages (e.g., `ggplot2`).
+
+2. **Run the analysis**:
+   - Knit the `analysis.Rmd` file to generate the PDF report (`analysis.pdf`).
+
+3. **View the results**:
+   - The compiled PDF report contains the full analysis, including exploratory data analysis, regression modeling, and conclusions.
+  
+4. **View the results**:
+   - The compiled PDF report contains the full analysis, including exploratory data analysis, regression modeling, and conclusions.
+
+## Key Findings
+
+- **Manual transmissions are associated with higher MPG** compared to automatic transmissions.
+- After adjusting for weight and horsepower, the MPG difference between manual and automatic transmissions is approximately **2.9 MPG**.
+- The 95% confidence interval for this difference is **1.5 to 4.3 MPG**.
+
+---
+
+## Dependencies
+
+The analysis requires the following R packages:
+- `ggplot2` (for data visualization)
+- `knitr` (for compiling the R Markdown document)
+
+You can install these packages using:
+```r
+install.packages(c("ggplot2", "knitr"))
 ```
