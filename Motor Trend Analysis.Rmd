@@ -1,0 +1,107 @@
+---
+title: 'Motor Trend Analysis: Automatic vs. Manual Transmission MPG'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+# Executive Summary
+This analysis explores the relationship between transmission type (automatic vs. manual) and miles per gallon (MPG) using the mtcars dataset. We perform exploratory data analysis (EDA) to understand the data structure and fit multiple regression models to quantify the MPG difference between automatic and manual transmissions. Our findings indicate that manual transmissions are associated with higher MPG, with an average improvement of r round(coef(lm(mpg ~ am, data = mtcars))[2], 1) MPG compared to automatic transmissions. However, this difference is influenced by other variables such as weight and horsepower. Residual diagnostics confirm the model's adequacy, and uncertainty is quantified using confidence intervals.
+
+
+## Exploratory Data Analysis (EDA)
+We begin by examining the structure of the mtcars dataset and the relationship between MPG and transmission type.
+
+```{r eda}
+# Load the dataset
+data(mtcars)
+
+# Convert 'am' to a factor for clarity
+mtcars$am <- factor(mtcars$am, levels = c(0, 1), labels = c("Automatic", "Manual"))
+
+# Summary statistics
+summary(mtcars)
+
+# Boxplot of MPG by transmission type
+library(ggplot2)
+ggplot(mtcars, aes(x = am, y = mpg, fill = am)) +
+  geom_boxplot() +
+  labs(title = "MPG by Transmission Type", x = "Transmission", y = "MPG") +
+  theme_minimal()
+```
+
+From the boxplot, we observe that manual transmissions tend to have higher MPG values compared to automatic transmissions. However, other variables such as weight (wt) and horsepower (hp) may also influence MPG.
+
+
+## Regression Modeling
+To quantify the MPG difference between automatic and manual transmissions, we fit multiple regression models.
+
+**Model 1: Simple Linear Regression (MPG ~ Transmission)**
+```{r regmod}
+# Fit a simple linear model
+model1 <- lm(mpg ~ am, data = mtcars)
+summary(model1)
+```
+
+The coefficient for `amManual` suggests an average improvement of **`r round(coef(model1)[2], 1)` MPG** compared to automatic transmissions. However, this model explains only **`r round(summary(model1)$r.squared * 100, 1)`%** of the variance in MPG.
+
+**Model 2: Multiple Regression (MPG ~ Transmission + Weight + Horsepower)**
+```{r mulreg}
+# Fit a multiple regression model
+model2 <- lm(mpg ~ am + wt + hp, data = mtcars)
+summary(model2)
+```
+
+After adjusting for weight and horsepower, the MPG difference between manual and automatic transmissions decreases to `r round(coef(model2)[2], 1)` MPG. This suggests that part of the observed difference is due to confounding variables.
+
+
+## Model Diagnostics
+
+We perform residual analysis to check the adequacy of the final model.
+
+```{r moddiag}
+# Residual plot
+plot(model2, which = 1, main = "Residuals vs Fitted")
+```
+
+The residuals appear randomly distributed around zero, indicating no major violations of linear regression assumptions.
+
+
+## Quantifying Uncertainty
+
+We calculate a 95% confidence interval for the MPG difference between manual and automatic transmissions.
+
+```{r uncer}
+confint(model2, "amManual", level = 0.95)
+```
+
+The confidence interval suggests that manual transmissions improve MPG by `r round(confint(model2, "amManual", level = 0.95)[1], 1)` to `r round(confint(model2, "amManual", level = 0.95)[2], 1)` MPG compared to automatic transmissions, after adjusting for weight and horsepower.
+
+
+## Conclusion
+Manual transmissions are associated with higher MPG compared to automatic transmissions, with an average improvement of `r round(coef(model2)[2], 1)` MPG after adjusting for weight and horsepower. However, this difference is smaller than initially observed in the simple model, highlighting the importance of considering confounding variables. Residual diagnostics confirm the model's adequacy, and the confidence interval quantifies the uncertainty in our estimate.
+
+
+### Appendix
+**Figure 1: MPG by Transmission Type**
+```{r}
+ggplot(mtcars, aes(x = am, y = mpg, fill = am)) +
+  geom_boxplot() +
+  labs(title = "MPG by Transmission Type", x = "Transmission", y = "MPG") +
+  theme_minimal()
+```
+
+**Figure 2: Residuals vs Fitted Plot**
+```{r}
+plot(model2, which = 1, main = "Residuals vs Fitted")
+```
+
+
