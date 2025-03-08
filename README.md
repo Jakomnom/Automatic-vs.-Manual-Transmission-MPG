@@ -34,4 +34,6 @@ For more details about the dataset, see the [R documentation](https://www.rdocum
 ---
 
 ## Repository Structure
+```
 Motor-Trend-Analysis/ ├── README.md # This file ├── analysis.Rmd # R Markdown file for the analysis ├── analysis.pdf # Compiled PDF report ├── figures/ # Folder for figures └── data/ # Folder for datasets
+```
